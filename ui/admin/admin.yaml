@@ -1,0 +1,324 @@
+about:
+  date: November 08, 2024 05:10:39
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 10
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  Accessory:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: price
+    - name: id
+    description: Represents car accessories available in the dealership.
+    info_list: Represents car accessories available in the dealership.
+    type: Accessory
+    user_key: name
+  Appointment:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: customer_id
+    - name: service_id
+    - name: appointment_date
+      type: DATE
+    - name: is_confirmed
+    description: Represents appointments made by customers for car services.
+    info_list: Represents appointments made by customers for car services.
+    tab_groups:
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    - direction: toone
+      fks:
+      - service_id
+      name: service
+      resource: Service
+    type: Appointment
+    user_key: id
+  Car:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: dealership_id
+    - name: model_id
+    - name: vin
+      required: true
+    - name: year
+    - name: price
+    description: Represents individual cars in the inventory.
+    info_list: Represents individual cars in the inventory.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - car_id
+      name: InventoryList
+      resource: Inventory
+    - direction: tomany
+      fks:
+      - car_id
+      name: ReviewList
+      resource: Review
+    - direction: tomany
+      fks:
+      - car_id
+      name: SaleList
+      resource: Sale
+    - direction: tomany
+      fks:
+      - car_id
+      name: ServiceList
+      resource: Service
+    - direction: toone
+      fks:
+      - dealership_id
+      name: dealership
+      resource: Dealership
+    - direction: toone
+      fks:
+      - model_id
+      name: model
+      resource: CarModel
+    type: Car
+    user_key: id
+  CarModel:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: manufacturer
+    - name: id
+    description: Represents different car models available at the dealership.
+    info_list: Represents different car models available at the dealership.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - model_id
+      name: CarList
+      resource: Car
+    type: CarModel
+    user_key: name
+  Customer:
+    attributes:
+    - label: ' first_name*'
+      name: first_name
+      required: true
+      search: true
+      sort: true
+    - name: last_name
+      required: true
+    - name: phone_number
+    - name: id
+    description: Represents customers of the dealership.
+    info_list: Represents customers of the dealership.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - customer_id
+      name: AppointmentList
+      resource: Appointment
+    - direction: tomany
+      fks:
+      - customer_id
+      name: ReviewList
+      resource: Review
+    - direction: tomany
+      fks:
+      - customer_id
+      name: SaleList
+      resource: Sale
+    type: Customer
+    user_key: first_name
+  Dealership:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: location
+    - name: id
+    description: Represents a car dealership entity.
+    info_list: Represents a car dealership entity.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - dealership_id
+      name: CarList
+      resource: Car
+    type: Dealership
+    user_key: name
+  Employee:
+    attributes:
+    - label: ' first_name*'
+      name: first_name
+      required: true
+      search: true
+      sort: true
+    - name: last_name
+      required: true
+    - name: role
+    - name: hire_date
+      type: DATE
+    - name: salary
+    - name: id
+    description: Represents employees working at the dealership.
+    info_list: Represents employees working at the dealership.
+    type: Employee
+    user_key: first_name
+  Inventory:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: car_id
+    - name: quantity
+      required: true
+    description: Represents current status of cars available in the warehouse.
+    info_list: Represents current status of cars available in the warehouse.
+    tab_groups:
+    - direction: toone
+      fks:
+      - car_id
+      name: car
+      resource: Car
+    type: Inventory
+    user_key: id
+  Manufacturer:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: origin_country
+    - name: id
+    description: Represents car manufacturers.
+    info_list: Represents car manufacturers.
+    type: Manufacturer
+    user_key: name
+  Review:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: car_id
+    - name: customer_id
+    - name: rating
+    - name: comment
+    description: Represents customer reviews for the cars.
+    info_list: Represents customer reviews for the cars.
+    tab_groups:
+    - direction: toone
+      fks:
+      - car_id
+      name: car
+      resource: Car
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    type: Review
+    user_key: id
+  Sale:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: car_id
+    - name: customer_id
+    - name: sale_date
+      type: DATE
+    - name: sale_price
+    description: Represents sales transactions at the dealership.
+    info_list: Represents sales transactions at the dealership.
+    tab_groups:
+    - direction: toone
+      fks:
+      - car_id
+      name: car
+      resource: Car
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    type: Sale
+    user_key: id
+  Service:
+    attributes:
+    - label: ' description*'
+      name: description
+      search: true
+      sort: true
+    - name: car_id
+    - name: date
+      type: DATE
+    - name: cost
+    - name: id
+    description: Represents services offered by the dealership's service department.
+    info_list: Represents services offered by the dealership's service department.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - service_id
+      name: AppointmentList
+      resource: Appointment
+    - direction: toone
+      fks:
+      - car_id
+      name: car
+      resource: Car
+    type: Service
+    user_key: description
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'
